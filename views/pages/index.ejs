@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <% include ../partials/head %>
+</head>
+<body class="container">
+
+<header>
+    <% include ../partials/header %>
+</header>
+
+<main>
+  <script src="/socket.io/socket.io.js"></script>
+  <table cellpadding="2" cellspacing="2" border="0" width="100%" align="center">
+  <thead>
+      <tr>
+          <th>URL</th>
+          <th>Status</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+      <tbody id="tableData"></tbody>
+  </table>
+  <script type="text/javascript">
+  var socket = io();
+  socket.on('status', function(data){
+    var k = '<tbody>'
+    for(i = 0;i < data.length; i++){
+        k+= '<tr>';
+        k+= '<td>' + data[i].url + '</td>';
+        k+= '<td align="justify">' + data[i].status + '</td>';
+        k+= '<td align="justify" width="30%">' + data[i].description + '</td>';
+        k+= '</tr>';
+    }
+    k+='</tbody>';
+    document.getElementById('tableData').innerHTML = k;
+  });
+ </script>
+</main>
+
+<footer>
+    <% include ../partials/footer %>
+</footer>
+
+</body>
+</html>
