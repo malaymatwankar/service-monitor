@@ -1,0 +1,34 @@
+{
+  "services":[
+    {
+      "name":"auth",
+      "url":"http://localhost:1337",
+      "env":"qa"
+    },
+    {
+      "name":"search",
+      "url":"http://localhost:1337",
+      "env":"qa"
+    },
+    {
+      "name":"yahoo",
+      "url":"https://yahoo.com",
+      "env":"qa"
+    },
+    {
+      "name":"cache",
+      "url":"http://localhost:1337",
+      "env":"qa"
+    },
+    {
+      "name":"kibana",
+      "url":"http://localhost:1337",
+      "env":"qa"
+    },
+    {
+      "name":"elastic-search",
+      "url":"http://localhost:1337",
+      "env":"qa"
+    }
+  ]
+}

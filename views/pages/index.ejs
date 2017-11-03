@@ -16,6 +16,8 @@
   <table class="table table-striped">
   <thead>
       <tr>
+          <th>Service</th>
+          <%# <th>Environment</th>%>
           <th>URL</th>
           <th>Status</th>
           <th>Description</th>
@@ -28,18 +30,25 @@
   <script type="text/javascript">
   var socket = io();
   socket.on('status', function(data){
+    console.log("###########:: ",data);
     var k = '<tbody>'
     for(i = 0;i < data.length; i++){
         k+= '<tr style="border-bottom: 1px solid black">';
-        k+= '<td>' + data[i].url + '</td>';
         if(data[i].status===200){
+          k+= '<td>' + data[i].name + '</td>';
+          // k+= '<td>' + data[i].env + '</td>';
+          k+= '<td>' + data[i].url + '</td>';
           k+= '<td style="color:green">' + data[i].status + '</td>';
           k+= '<td style="color:green">' + data[i].description + '</td>';
+          k+= '<td>' + data[i].time + '</td>';
         }else{
+          k+= '<td style="color:red">' + data[i].name + '</td>';
+          // k+= '<td style="color:red>'  + data[i].env + '</td>';
+          k+= '<td style="color:red">' + data[i].url + '</td>';
           k+= '<td style="color:red">' + data[i].status + '</td>';
           k+= '<td style="color:red">' + data[i].description + '</td>';
+          k+= '<td style="color:red">' + data[i].time + '</td>';
         }
-        k+= '<td>' + data[i].time + '</td>';
         k+= '</tr>';
     }
     k+='</tbody>';

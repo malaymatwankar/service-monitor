@@ -1,20 +1,19 @@
 const async = require('async');
 const request = require('request');
-
+const servicesJson = require('../../resources/services');
 module.exports = function(app, io) {
   app.get('/', function(req, res) {
-    const urls = ['http://localhost:1337', 'https://yahoo.com', 'http://localhost:1337', 'http://localhost:1337', 'http://localhost:1337', 'http://localhost:1337', 'http://localhost:1337', 'http://localhost:1337', 'http://localhost:1337', 'http://localhost:1337', 'http://localhost:1337', 'http://localhost:1337', 'http://localhost:1337', 'http://localhost:1337', 'http://localhost:1337', 'http://localhost:1337', 'http://localhost:1337', 'http://localhost:1337', 'http://localhost:1337', 'http://localhost:1337', 'http://localhost:1337', 'http://localhost:1337'];
-    ping(urls, io);
+    const services = servicesJson['services'];
+    ping(services, io);
     res.render('pages/index');
   });
 };
 
-function ping(urls, io) {
+function ping(services, io) {
   var async = require('async');
   io.on('connection', function(socket) {
-    console.log('Page loading successful...');
     setInterval(function asyncRequest() {
-      async.map(urls, makeRequest, function(err, res) {
+      async.map(services, makeRequest, function(err, res) {
         if (err) {
           // Write socket programming code here...
           console.log("ERR:: ", err);
@@ -30,16 +29,18 @@ function ping(urls, io) {
   });
 }
 
-function makeRequest(url, callback) {
+function makeRequest(service, callback) {
   let options = {
-    url: url,
+    url: service['url'],
     time: true,
     timeout: 5000
   };
   request.get(options, function(err, res) {
     if (err) {
       var resp = {
-        url: url,
+        name: service['name'],
+        url: service['url'],
+        env: service['env'],
         status: '--',
         time: '--'
       }
@@ -54,7 +55,9 @@ function makeRequest(url, callback) {
       return callback(null, resp);
     } else {
       return callback(null, {
-        url: url,
+        name: service['name'],
+        url: service['url'],
+        env: service['env'],
         status: res.statusCode,
         description: res.statusMessage,
         time: `${res.elapsedTime.toFixed(2)} ms`

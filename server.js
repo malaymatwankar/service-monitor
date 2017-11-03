@@ -2,9 +2,17 @@ const express = require('express');
 const app = express();
 const server = require('http')
   .createServer(app);
+const bodyParser = require('body-parser')
 const io = require('socket.io')(server);
 const fs = require('fs');
 
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
+
+// parse application/json
+app.use(bodyParser.json())
 app.set('view engine', 'ejs');
 
 function loadControllers() {
@@ -19,7 +27,7 @@ function loadControllers() {
 }
 
 function startServer() {
-  const port = 3000;
+  const port = 3002;
   loadControllers();
   server.listen(port, function() {
     console.log(`Service Monitor Running on port ${port}`);
