@@ -8,7 +8,7 @@
 <header>
     <% include ../partials/header %>
 </header>
-
+<br>
 <main>
   <script src="/socket.io/socket.io.js"></script>
   <table cellpadding="2" cellspacing="2" border="0" width="100%" align="center">
@@ -17,8 +17,10 @@
           <th>URL</th>
           <th>Status</th>
           <th>Description</th>
+          <th>Aproximate Response Time</th>
       </tr>
   </thead>
+  <br>
       <tbody id="tableData"></tbody>
   </table>
   <script type="text/javascript">
@@ -26,10 +28,16 @@
   socket.on('status', function(data){
     var k = '<tbody>'
     for(i = 0;i < data.length; i++){
-        k+= '<tr>';
+        k+= '<tr style="border-bottom: 1px solid black">';
         k+= '<td>' + data[i].url + '</td>';
-        k+= '<td align="justify">' + data[i].status + '</td>';
-        k+= '<td align="justify" width="30%">' + data[i].description + '</td>';
+        if(data[i].status===200){
+          k+= '<td align="justify" style="color:green">' + data[i].status + '</td>';
+          k+= '<td align="justify" style="color:green" width="30%">' + data[i].description + '</td>';
+        }else{
+          k+= '<td align="justify" style="color:red">' + data[i].status + '</td>';
+          k+= '<td align="justify" style="color:red" width="30%">' + data[i].description + '</td>';
+        }
+        k+= '<td align="center" width="30%">' + data[i].time + '</td>';
         k+= '</tr>';
     }
     k+='</tbody>';

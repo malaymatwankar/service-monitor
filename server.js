@@ -9,13 +9,18 @@ const io = require('socket.io')(server);
 let timeInterval = 0;
 
 function makeRequest(url, callback) {
-  request.get(url, {
+  // console.log("This is url ", url);
+  let options = {
+    url: url,
+    time: true,
     timeout: 5000
-  }, function(err, res) {
+  };
+  request.get(options, function(err, res) {
     if (err) {
       var resp = {
         url: url,
         status: '--',
+        time: '--'
       }
       if (err.code === 'ECONNREFUSED') {
         resp['description'] = 'The service seems to be down please check server logs...';
@@ -30,7 +35,8 @@ function makeRequest(url, callback) {
       return callback(null, {
         url: url,
         status: res.statusCode,
-        description: res.statusMessage
+        description: res.statusMessage,
+        time: `${res.elapsedTime.toFixed(2)} ms`
       });
     }
   });
@@ -64,7 +70,7 @@ function ping(urls) {
 
 app.set('view engine', 'ejs');
 app.get('/', function(req, res) {
-  const urls = ['http://localhost:1337', 'https://yahoo.com'];
+  const urls = ['http://localhost:1337', 'http://localhost:1337', 'http://localhost:1337'];
   ping(urls);
   res.render('pages/index');
 });
